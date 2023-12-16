@@ -11,7 +11,7 @@ npm install ntcjs --save
 ## Getting Started
 
 ```javascript
-const ntc = require('ntcjs');
+const ntc = require('@trihargianto/ntcjs');
 
 const n_match = ntc.name('#6195ED');
 n_rgb = n_match[0]; // RGB value of closest match

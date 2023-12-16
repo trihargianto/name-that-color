@@ -5,7 +5,7 @@ A Node CommonJS compatible wrapper for the Name That Color library (ntc js) - ht
 ## Installation
 
 ```
-npm install ntcjs --save
+npm install @trihargianto/ntcjs --save
 ```
 
 ## Getting Started

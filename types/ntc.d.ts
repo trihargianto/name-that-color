@@ -1,9 +1,9 @@
 declare const ntc: {
   init: () => void;
-  name: (color: string) => [string, string, boolean];
+  name: (color: string) => [string, string, boolean, string];
   hsl: (color: string) => [number, number, number];
   rgb: (color: string) => [number, number, number];
-  names: [string, string][];
+  names: [string, string, string][];
 };
 
 export default ntc;

@@ -12,6 +12,6 @@ test("ntc test", function (t) {
 
 test("able to convert hex to color name", function (t) {
   t.plan(2);
-  t.equal(ntc.name("#35312C")[1], "Acadia");
   t.equal(ntc.name("#35312C")[3], "Brown");
+  t.equal(ntc.name("#95FE2A")[3], "Green");
 });

@@ -19,7 +19,7 @@ n_name = n_match[1]; // Text string: Color name
 n_exactmatch = n_match[2]; // True if exact color match
 n_exactmatch = n_match[3]; // Text string: Color group name
 
-console.log(n_match); // [ '#6495ED', 'Cornflower Blue', false ]
+console.log(n_match); // [ '#6495ED', 'Cornflower Blue', false, 'Blue' ]
 ```
 
 ## Live Demo

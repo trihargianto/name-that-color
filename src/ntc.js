@@ -1,7 +1,7 @@
 /*
 
 +-----------------------------------------------------------------+
-|     Created by Chirag Mehta - http://chir.ag/projects/ntc       |
+|   Created by Chirag Mehta - http://chir.ag/tech/download/ntc    |
 |-----------------------------------------------------------------|
 |               ntc js (Name that Color JavaScript)               |
 +-----------------------------------------------------------------+
@@ -20,10 +20,11 @@ Sample Usage:
   <script type="text/javascript">
 
     var n_match  = ntc.name("#6195ED");
-    n_rgb        = n_match[0]; // This is the RGB value of the closest matching color
-    n_name       = n_match[1]; // This is the text string for the name of the match
-    n_exactmatch = n_match[2]; // True if exact color match, False if close-match
-    n_name_group = n_match[3]; // The color group name
+    n_rgb = n_match[0]; // This is the RGB value of the closest matching color
+    n_name = n_match[1]; // This is the text string for the name of the match
+    n_shade_rgb = n_match[2]; // This is the RGB value for the name of colors shade
+    n_shade_name = n_match[3]; // This is the text string for the name of colors shade
+    n_exactmatch = n_match[4]; // True if exact color match, False if close-match
 
     alert(n_match);
 
@@ -44,20 +45,10 @@ var ntc = {
 
   name: function (color) {
     color = color.toUpperCase();
-    if (color.length < 3 || color.length > 7) {
-      return [
-        "#000000",
-        "Invalid Color: " + color,
-        false,
-        "Invalid Color " + color,
-      ];
-    }
-
-    if (color.length % 3 == 0) {
-      color = "#" + color;
-    }
-
-    if (color.length == 4) {
+    if (color.length < 3 || color.length > 7)
+      return ["#000000", "Invalid Color: " + color, "#000000", "", false];
+    if (color.length % 3 == 0) color = "#" + color;
+    if (color.length == 4)
       color =
         "#" +
         color.substr(1, 1) +
@@ -66,7 +57,6 @@ var ntc = {
         color.substr(2, 1) +
         color.substr(3, 1) +
         color.substr(3, 1);
-    }
 
     var rgb = ntc.rgb(color);
     var r = rgb[0],
@@ -77,27 +67,30 @@ var ntc = {
       s = hsl[1],
       l = hsl[2];
     var ndf1 = 0;
-    var ndf2 = 0;
-    var ndf = 0;
+    ndf2 = 0;
+    ndf = 0;
     var cl = -1,
       df = -1;
 
     for (var i = 0; i < ntc.names.length; i++) {
       if (color == "#" + ntc.names[i][0])
-        return ["#" + ntc.names[i][0], ntc.names[i][1], true, ntc.names[i][2]];
+        return [
+          "#" + ntc.names[i][0],
+          ntc.names[i][1],
+          ntc.shadergb(ntc.names[i][2]),
+          ntc.names[i][2],
+          true,
+        ];
 
       ndf1 =
-        Math.pow(r - ntc.names[i][2], 2) +
-        Math.pow(g - ntc.names[i][3], 2) +
-        Math.pow(b - ntc.names[i][4], 2);
-
+        Math.pow(r - ntc.names[i][3], 2) +
+        Math.pow(g - ntc.names[i][4], 2) +
+        Math.pow(b - ntc.names[i][5], 2);
       ndf2 =
-        Math.pow(h - ntc.names[i][5], 2) +
-        Math.pow(s - ntc.names[i][6], 2) +
-        Math.pow(l - ntc.names[i][7], 2);
-
+        Math.abs(Math.pow(h - ntc.names[i][6], 2)) +
+        Math.pow(s - ntc.names[i][7], 2) +
+        Math.abs(Math.pow(l - ntc.names[i][8], 2));
       ndf = ndf1 + ndf2 * 2;
-
       if (df < 0 || df > ndf) {
         df = ndf;
         cl = i;
@@ -105,8 +98,14 @@ var ntc = {
     }
 
     return cl < 0
-      ? ["#000000", "Invalid Color: " + color, false, "Invalid Color: " + color]
-      : ["#" + ntc.names[cl][0], ntc.names[cl][1], false, ntc.names[cl][2]];
+      ? ["#000000", "Invalid Color: " + color, "#000000", "", false]
+      : [
+          "#" + ntc.names[cl][0],
+          ntc.names[cl][1],
+          ntc.shadergb(ntc.names[cl][2]),
+          ntc.names[cl][2],
+          false,
+        ];
   },
 
   // adopted from: Farbtastic 1.2
@@ -149,6 +148,26 @@ var ntc = {
       parseInt("0x" + color.substring(5, 7)),
     ];
   },
+
+  shadergb: function (shadename) {
+    for (var i = 0; i < ntc.shades.length; i++) {
+      if (shadename == ntc.shades[i][1]) return "#" + ntc.shades[i][0];
+    }
+    return "#000000";
+  },
+
+  shades: [
+    ["FF0000", "Red"],
+    ["FFA500", "Orange"],
+    ["FFFF00", "Yellow"],
+    ["008000", "Green"],
+    ["0000FF", "Blue"],
+    ["EE82EE", "Violet"],
+    ["A52A2A", "Brown"],
+    ["000000", "Black"],
+    ["808080", "Grey"],
+    ["FFFFFF", "White"],
+  ],
 
   names: [
     ["35312C", "Acadia", "Brown"],

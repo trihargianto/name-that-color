@@ -3,7 +3,7 @@ declare const ntc: {
   name: (color: string) => [string, string, boolean, string];
   hsl: (color: string) => [number, number, number];
   rgb: (color: string) => [number, number, number];
-  names: [string, string, string][];
+  names: [string, string, string, string, boolean][];
 };
 
 export default ntc;

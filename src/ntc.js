@@ -66,9 +66,9 @@ var ntc = {
     var h = hsl[0],
       s = hsl[1],
       l = hsl[2];
-    var ndf1 = 0;
-    ndf2 = 0;
-    ndf = 0;
+    var ndf1 = 0,
+      ndf2 = 0,
+      ndf = 0;
     var cl = -1,
       df = -1;
 
